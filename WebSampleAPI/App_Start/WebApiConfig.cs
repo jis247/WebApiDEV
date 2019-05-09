@@ -44,6 +44,9 @@ namespace WebSampleAPI
                 defaults: new { id = RouteParameter.Optional }
             );
 
+            //replaces http with https
+            //config.Filters.Add(new RequireHttpsAttribute());
+
             
             //CustomJsonFormatter class is called
             config.Formatters.Add(new CustomJsonFormatter());
@@ -58,8 +61,8 @@ namespace WebSampleAPI
 
 
             //Change Raw content data to intdented and property name in camelcase.
-            config.Formatters.JsonFormatter.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
-            config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            //config.Formatters.JsonFormatter.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
+            //config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Web.Http;
 using EmployeeDataAccess;
 
@@ -10,14 +11,17 @@ namespace WebSampleAPI.Controllers
 {
     public class EmployeesController : ApiController
     {
-
+        //[BasicAuthentication]
         //api/empolyees?gender=all
-        [HttpGet]
-        public HttpResponseMessage Get(string gender="all")
+        
+        public HttpResponseMessage Get(string gender="All")
         {
-            using(PlayDBEntities entities=new PlayDBEntities())
+            //string username = Thread.CurrentPrincipal.Identity.Name;
+
+            using (PlayDBEntities entities=new PlayDBEntities())
             {
                 switch(gender.ToLower())
+                //switch (username.ToLower())
                 {
                     case "all": return Request.CreateResponse(HttpStatusCode.OK, entities.Employees.ToList());
 
@@ -30,7 +34,7 @@ namespace WebSampleAPI.Controllers
 
             }
         }
-
+         
         [HttpGet]
         public HttpResponseMessage EmployeeById(int id)
         {
