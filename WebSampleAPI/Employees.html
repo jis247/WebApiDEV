@@ -8,18 +8,33 @@
         $(document).ready(function () {
             var ulEmployee = $('#ulEmployee');
             $('#btnAdd').click(function () {
+                var username = $('#txtUsername').val();
+                var password = $('#txtPassword').val();
+
+
                 $.ajax({
                     type: 'GET',
-                    //url: "http://localhost:52436/api/employees?gender=all",
-                    url: "api/Employees",
+                    url: "api/employees",
                     dataType: 'json',
+                    headers:{
+                        'Authorization' : 'Basic ' + btoa(username + ':' + password)
+                        //'Authorization': 'Basic ZmVtYWxlOmZlbWFsZQ==' 
+                    },
                     success: function (data) {
                         ulEmployee.empty();
                         $.each(data, function (index,val) {
                             var fullName = val.FirstName + ' ' + val.LastName;
-                            //var fullName = data.FirstName ; 
-                            ulEmployee.append('<li>' + fullName + '</li>');
+                            ulEmployee.append('<li>' + fullName + '(' + val.Gender + ') </li>');
+                            //ulEmployee.append('<li>' + fullName +  '</li>');
                         });
+                    },
+                    complete: function (jqXHR) {
+                        if (jqXHR.status == '401') {
+                            ulEmployee.empty();
+                            ulEmployee.append('<li style="color:Red">' + jqXHR.status + ' : ' + jqXHR.statusText + '</li>');
+
+                        }
+
                     }
                 });
             });
@@ -30,9 +45,11 @@
     </script>
 </head>
 <body>
-    <input type="button" id="btnAdd" value="Get All Eployees" />
+    Username : <input type="text" id="txtUsername" />
+    Password : <input type="password" id="txtPassword" />
+    <br /><br />
+    <input type="button" id="btnAdd" value="Authenticate and Get All Eployees" />
     <input type="button" id="btnClear" value="Clear" />
-    <ul id="ulEmployee">
-    </ul>
+    <ul id="ulEmployee"></ul>
 </body>
 </html>

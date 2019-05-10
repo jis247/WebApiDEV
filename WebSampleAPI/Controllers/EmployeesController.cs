@@ -11,19 +11,20 @@ namespace WebSampleAPI.Controllers
 {
     public class EmployeesController : ApiController
     {
-        //[BasicAuthentication]
-        //api/empolyees?gender=all
         
+        //api/empolyees?gender=all
+        [BasicAuthentication]
         public HttpResponseMessage Get(string gender="All")
         {
-            //string username = Thread.CurrentPrincipal.Identity.Name;
+            //username value comes from basicAuthenticationAttribute.cs line 37
+            string username = Thread.CurrentPrincipal.Identity.Name;
 
             using (PlayDBEntities entities=new PlayDBEntities())
             {
-                switch(gender.ToLower())
-                //switch (username.ToLower())
+                //switch(gender.ToLower())
+                switch (username.ToLower())
                 {
-                    case "all": return Request.CreateResponse(HttpStatusCode.OK, entities.Employees.ToList());
+                    //case "all": return Request.CreateResponse(HttpStatusCode.OK, entities.Employees.ToList());
 
                     case "male":return Request.CreateResponse(HttpStatusCode.OK, entities.Employees.Where(e => e.Gender == "male").ToList());
 

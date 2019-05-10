@@ -13,10 +13,10 @@ namespace EmployeeDataAccess
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class PlayDBEntities : DbContext
+    public partial class PlayDBEntities1 : DbContext
     {
-        public PlayDBEntities()
-            : base("name=PlayDBEntities")
+        public PlayDBEntities1()
+            : base("name=PlayDBEntities1")
         {
         }
     
@@ -25,9 +25,6 @@ namespace EmployeeDataAccess
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Employee> Employees { get; set; }
-
         public virtual DbSet<User> Users { get; set; }
-
     }
 }

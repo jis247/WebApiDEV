@@ -14,34 +14,35 @@ namespace WebSampleAPI
 {
     public class BasicAuthenticationAttribute : AuthorizationFilterAttribute
     {
-        //public override void OnAuthorization(HttpActionContext actionContext)
-        //{
-        //    if (actionContext.Request.Headers.Authorization == null)
-        //    {
-        //        actionContext.Response = actionContext.Request
-        //            .CreateResponse(HttpStatusCode.Unauthorized);
-        //    }
-        //    else
-        //    {
-        //        string authenticationToken = actionContext.Request.Headers
-        //                                    .Authorization.Parameter;
-        //        string decodedAuthenticationToken = Encoding.UTF8.GetString(
-        //            Convert.FromBase64String(authenticationToken));
-        //        string[] usernamePasswordArray = decodedAuthenticationToken.Split(':');
-        //        string username = usernamePasswordArray[0];
-        //        string password = usernamePasswordArray[1];
+        public override void OnAuthorization(HttpActionContext actionContext)
+        {
+            if (actionContext.Request.Headers.Authorization == null)
+            {
+                actionContext.Response = actionContext.Request
+                    .CreateResponse(HttpStatusCode.Unauthorized);
+            }
+            else
+            {
+                string authenticationToken = actionContext.Request.Headers
+                                            .Authorization.Parameter;
+                string decodedAuthenticationToken = Encoding.UTF8.GetString(
+                    Convert.FromBase64String(authenticationToken));
+                string[] usernamePasswordArray = decodedAuthenticationToken.Split(':');
+                string username = usernamePasswordArray[0];
+                string password = usernamePasswordArray[1];
 
-        //        if (EmployeeSecurity.Login(username, password))
-        //        {
-        //            Thread.CurrentPrincipal = new GenericPrincipal(
-        //                new GenericIdentity(username), null);
-        //        }
-        //        else
-        //        {
-        //            actionContext.Response = actionContext.Request
-        //                .CreateResponse(HttpStatusCode.Unauthorized);
-        //        }
-        //    }
-        //}
+                if (EmployeeSecurity.Login(username, password))
+                {
+                    //from here we get username eg female to be displayed
+                    Thread.CurrentPrincipal = new GenericPrincipal(
+                        new GenericIdentity(username), null);
+                }
+                else
+                {
+                    actionContext.Response = actionContext.Request
+                        .CreateResponse(HttpStatusCode.Unauthorized);
+                }
+            }
+        }
     }
 }
